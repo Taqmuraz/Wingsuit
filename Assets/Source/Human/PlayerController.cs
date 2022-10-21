@@ -90,10 +90,10 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         bool shift = Input.GetKey(KeyCode.LeftShift);
         CommonWingsOpenness = Input.GetKey(KeyCode.Space) ? 0f : (shift ? 1f : 0.5f);
 
-        ForwardWingsOpenness = 1f;// (shift && Input.GetKey(KeyCode.W) ? 0f : 1f);
-        BackWingsOpenness = 1f;// (shift && Input.GetKey(KeyCode.S) ? 0f : 1f);
-        LeftWingOpenness = 1f;// (shift && Input.GetKey(KeyCode.A)) ? 0f : 1f;
-        RightWingOpenness = 1f;// (shift && Input.GetKey(KeyCode.D)) ? 0f : 1f;
+        ForwardWingsOpenness = Input.GetKey(KeyCode.UpArrow) ? 0f : 1f;
+        BackWingsOpenness = Input.GetKey(KeyCode.DownArrow) ? 0f : 1f;
+        LeftWingOpenness = Input.GetKey(KeyCode.LeftArrow) ? 0f : 1f;
+        RightWingOpenness = Input.GetKey(KeyCode.RightArrow) ? 0f : 1f;
         var rotationInput = new Vector2(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
 
         ForwardWingRotationNormalized = new Vector2(rotationInput.y, 0f);
