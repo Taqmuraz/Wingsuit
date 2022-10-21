@@ -14,5 +14,7 @@ public sealed class HumanStateMachile : StateMachine<string, HumanState, IHumanC
         yield return new HumanDefaultState().Initialize(human);
         yield return new HumanFlightState().Initialize(human);
         yield return new HumanDisabledState().Initialize(human);
+        yield return new HumanParachuteState().Initialize(human);
+        yield return new HumanOpenParachuteState().Initialize(human);
     }
 }

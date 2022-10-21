@@ -11,8 +11,10 @@ public abstract class HumanController : MonoBehaviour, IHumanController
     {
         var controller = instance.AddComponent<TController>();
         controller.bonesMap = provider.HumanBones.ToDictionary(b => b.Name, b => b.Transform);
+        controller.equipment = provider.Equipment;
     }
 
+    IEnumerable<IHumanEquipmentElement> equipment;
     List<ICollisionHandler> collisionHandlers = new List<ICollisionHandler>();
     List<IEventsHandler> eventListeners = new List<IEventsHandler>();
     HumanStateMachile stateMachile;
@@ -108,5 +110,10 @@ public abstract class HumanController : MonoBehaviour, IHumanController
     public void UnsubscribeCollisionHandler(ICollisionHandler handler)
     {
         collisionHandlers.Remove(handler);
+    }
+
+    public TElement GetEquipmentElement<TElement>() where TElement : IHumanEquipmentElement
+    {
+        return (TElement)equipment.First(e => e is TElement);
     }
 }

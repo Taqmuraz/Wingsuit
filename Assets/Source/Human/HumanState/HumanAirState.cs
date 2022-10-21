@@ -5,45 +5,9 @@ public abstract class HumanAirState : HumanState, ICollisionHandler
 {
     protected interface IWingControl
     {
-        float WingOpenAngleNormalized { get; }
-        Vector2 WingRotation { get; }
+        float WingArea { get; }
+        Vector3 WingNormal { get; }
         Vector3 WingPivot { get; }
-    }
-    protected sealed class StaticWing : IWingControl
-    {
-        public StaticWing(float wingOpenAngle, Vector2 wingRotation, Vector3 wingPivot)
-        {
-            WingOpenAngleNormalized = wingOpenAngle;
-            WingRotation = wingRotation;
-            WingPivot = wingPivot;
-        }
-
-        public float WingOpenAngleNormalized { get; }
-        public Vector2 WingRotation { get; }
-        public Vector3 WingPivot { get; }
-    }
-
-    protected sealed class DynamicWingControl : IWingControl
-    {
-        public float WingOpenAngleNormalized { get; private set; }
-        public Vector2 WingRotation { get; private set; }
-        readonly float updateSpeed = 3f;
-
-        public DynamicWingControl(Vector3 wingPivot)
-        {
-            WingPivot = wingPivot;
-        }
-
-        public void UpdateOpenAngle(float angle)
-        {
-            WingOpenAngleNormalized = Mathf.Lerp(WingOpenAngleNormalized, angle, Time.deltaTime * updateSpeed);
-        }
-        public void UpdateRotation(Vector2 rotation)
-        {
-            WingRotation = Vector2.Lerp(WingRotation, rotation, Time.deltaTime * updateSpeed);
-        }
-
-        public Vector3 WingPivot { get; }
     }
 
     public void OnCollisionEnter(Vector3 point, Vector3 normal, Vector3 impulse)
@@ -84,10 +48,8 @@ public abstract class HumanAirState : HumanState, ICollisionHandler
     {
         float windage = 6f;
 
-        Vector3 localNormal = Quaternion.Euler(-wing.WingRotation.x, 0f, -wing.WingRotation.y) * Vector3.up;
-
-        Vector3 globalNormal = Human.TransformState.Rotation * localNormal.normalized;
-        Vector3 globalPoint = Human.TransformState.LocalToWorld.MultiplyPoint3x4(wing.WingPivot + new Vector3(0f, HumanSize.y * 0.5f, 0f));
+        Vector3 globalNormal = wing.WingNormal;
+        Vector3 globalPoint = Human.TransformState.LocalToWorld.MultiplyPoint3x4(wing.WingPivot);
 
         Vector3 velocity = Human.MoveSystem.GetVelocityAtPoint(globalPoint);
 
@@ -95,7 +57,7 @@ public abstract class HumanAirState : HumanState, ICollisionHandler
         float vDot = -Vector3.Dot(velocity, resistanceNormal);
         vDot = Mathf.Sqrt(vDot);
 
-        Vector3 resistance = resistanceNormal * vDot * windage * (wing.WingOpenAngleNormalized);
+        Vector3 resistance = resistanceNormal * vDot * windage * wing.WingArea;
         Human.MoveSystem.AddForceAtPoint(resistance, globalPoint);
     }
 }

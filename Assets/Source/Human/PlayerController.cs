@@ -10,6 +10,8 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
     Vector3 startPosition;
 
     IControlAction resetAction = new MoveToStateAction("Default", "Disabled");
+    IControlAction flightToParachuteAction = new MoveToStateAction("OpenParachute", "Flight");
+    IControlAction parachuteToFlightAction = new MoveToStateAction("Flight", "Parachute");
 
     SafeDictionary<string, IPlayerCameraMode> cameraControllerModes;
 
@@ -102,6 +104,11 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             LevelManager.LoadLevel(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            EnqueueAction(flightToParachuteAction);
+            EnqueueAction(parachuteToFlightAction);
         }
         if (Input.GetKey(KeyCode.R))
         {

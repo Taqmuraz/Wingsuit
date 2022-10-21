@@ -9,10 +9,12 @@ public abstract class HumanAnimation : EventsHandler, IHumanAnimation
         {
             InitialLocalPosition = state.LocalPosition;
             InitialLocalRotation = state.LocalRotation;
+            InitialLocalScale = state.LocalScale;
             State = state;
         }
 
         public Vector3 InitialLocalPosition { get; }
+        public Vector3 InitialLocalScale { get; }
         public Quaternion InitialLocalRotation { get; }
         public ITransformState State { get; }
 
@@ -28,6 +30,7 @@ public abstract class HumanAnimation : EventsHandler, IHumanAnimation
         {
             State.LocalPosition = InitialLocalPosition;
             State.LocalRotation = InitialLocalRotation;
+            State.LocalScale = InitialLocalScale;
         }
     }
 
@@ -53,8 +56,10 @@ public abstract class HumanAnimation : EventsHandler, IHumanAnimation
     void OnEnter()
     {
         EnterTime = Time.time;
-        foreach (var state in states) state.Reset();
+        if (ResetStateOnEnter) foreach (var state in states) state.Reset();
     }
+
+    protected virtual bool ResetStateOnEnter => true;
 
     HumanBoneState AddBoneState(string boneName)
     {

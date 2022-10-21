@@ -24,6 +24,11 @@ public sealed class StandardTransformState : ITransformState
         get => transform.localPosition;
         set => transform.localPosition = value;
     }
+    public Vector3 LocalScale
+    {
+        get => transform.localScale;
+        set => transform.localScale = value;
+    }
     public Quaternion LocalRotation
     {
         get => transform.localRotation;

@@ -26,6 +26,7 @@ public abstract class HumanState : EventsHandler, IControlAcceptor, IState<strin
         Key = CreateName();
         Human = controlProvider;
         animation = CreateAnimation();
+        CallEvent("Initialize");
         return this;
     }
 

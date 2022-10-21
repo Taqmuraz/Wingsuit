@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum HumanBuildType
@@ -11,8 +12,10 @@ public sealed class HumanBuildInfoProvider : MonoBehaviour, IHumanBuildInfoProvi
 {
     [SerializeField] HumanBuildType buildType;
     [SerializeField] List<HumanBone> bones = new List<HumanBone>();
+    [SerializeField] List<HumanEquipmentElement> equipment = new List<HumanEquipmentElement>();
 
     public IEnumerable<HumanBone> HumanBones => bones;
+    public IEnumerable<IHumanEquipmentElement> Equipment => equipment.Cast<IHumanEquipmentElement>().ToArray();
 
     void Start()
     {
