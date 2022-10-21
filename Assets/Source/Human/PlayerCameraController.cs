@@ -22,9 +22,7 @@ public sealed class PlayerCameraController : ICameraController
     {
         var transform = camera.transform;
 
-        Vector3 input = new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0f);
-        euler += input;
-        euler.x = Mathf.Clamp(euler.x, -80f, 80f);
+        mode.UpdateRotation(ref euler);
 
         float t = Time.deltaTime * 5f;
         fov = Mathf.Lerp(fov, mode.Fov, t);

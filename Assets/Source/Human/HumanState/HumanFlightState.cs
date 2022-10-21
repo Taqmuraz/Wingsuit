@@ -6,17 +6,20 @@ public sealed partial class HumanFlightState : HumanState, ICollisionHandler
     {
         float WingOpenAngle { get;  }
         Vector2 WingRotation { get; }
+        Vector3 WingPivot { get; }
     }
     sealed class StaticWing : IWingControl
     {
-        public StaticWing(float wingOpenAngle, Vector2 wingRotation)
+        public StaticWing(float wingOpenAngle, Vector2 wingRotation, Vector3 wingPivot)
         {
             WingOpenAngle = wingOpenAngle;
             WingRotation = wingRotation;
+            WingPivot = wingPivot;
         }
 
         public float WingOpenAngle { get; }
         public Vector2 WingRotation { get; }
+        public Vector3 WingPivot { get; }
     }
 
     sealed class DynamicWingControl : IWingControl
@@ -24,6 +27,11 @@ public sealed partial class HumanFlightState : HumanState, ICollisionHandler
         public float WingOpenAngle { get; private set; }
         public Vector2 WingRotation { get; private set; }
         readonly float updateSpeed = 3f;
+
+        public DynamicWingControl(Vector3 wingPivot)
+        {
+            WingPivot = wingPivot;
+        }
 
         public void UpdateOpenAngle(float angle)
         {
@@ -33,20 +41,22 @@ public sealed partial class HumanFlightState : HumanState, ICollisionHandler
         {
             WingRotation = Vector2.Lerp(WingRotation, rotation, Time.deltaTime * updateSpeed);
         }
-    }
-    DynamicWingControl leftWing = new DynamicWingControl();
-    DynamicWingControl rightWing = new DynamicWingControl();
-    DynamicWingControl backWing = new DynamicWingControl();
 
-    IWingControl bodySide = new StaticWing(wingOpenAngle, new Vector2(0f, 90f));
-    IWingControl bodyHorizontal = new StaticWing(wingOpenAngle, new Vector2(0f, 0f));
+        public Vector3 WingPivot { get; }
+    }
+    DynamicWingControl leftWing = new DynamicWingControl(new Vector3(-0.25f, 0f, 0.25f));
+    DynamicWingControl rightWing = new DynamicWingControl(new Vector3(0.25f, 0f, 0.25f));
+    DynamicWingControl backWing = new DynamicWingControl(new Vector3(0f, 0f, -0.25f));
+
+    IWingControl bodySide = new StaticWing(wingOpenAngle * 0.5f, new Vector2(0f, 90f), new Vector3(0f, 0f, -0.25f));
+    IWingControl bodyHorizontal = new StaticWing(wingOpenAngle * 0.5f, new Vector2(0f, 0f), new Vector3(0f, 0f, -0.25f));
 
     protected override IHumanAnimation CreateAnimation()
     {
         return new HumanFlightAnimation(Human, this);
     }
 
-    const float wingRotation = 45f;
+    const float wingRotation = 30f;
     const float wingOpenAngle = 60f;
 
     [BehaviourEvent]
@@ -80,31 +90,30 @@ public sealed partial class HumanFlightState : HumanState, ICollisionHandler
     [BehaviourEvent]
     void FixedUpdate()
     {
-        UpdateWingPhysics(leftWing, new Vector3(-0.5f, 0f, 0.5f));
-        UpdateWingPhysics(rightWing, new Vector3(0.5f, 0f, 0.5f));
-        UpdateWingPhysics(backWing, new Vector3(0f, 0f, -0.5f));
-        UpdateWingPhysics(bodySide, new Vector3(0f, 0f, -0.5f));
-        UpdateWingPhysics(bodyHorizontal, new Vector3(0f, 0f, -0.5f));
+        UpdateWingPhysics(leftWing);
+        UpdateWingPhysics(rightWing);
+        UpdateWingPhysics(backWing);
+        UpdateWingPhysics(bodySide);
+        UpdateWingPhysics(bodyHorizontal);
     }
 
-    void UpdateWingPhysics(IWingControl wing, Vector3 relativePosition)
+    void UpdateWingPhysics(IWingControl wing)
     {
-        float windage = 0.5f;
+        float windage = 6f;
 
         Vector3 localNormal = Quaternion.Euler(-wing.WingRotation.x, 0f, -wing.WingRotation.y) * Vector3.up;
 
         Vector3 globalNormal = Human.TransformState.Rotation * localNormal.normalized;
-        Vector3 globalPoint = Human.TransformState.LocalToWorld.MultiplyPoint3x4(relativePosition + new Vector3(0f, HumanSize.y * 0.5f, 0f));
+        Vector3 globalPoint = Human.TransformState.LocalToWorld.MultiplyPoint3x4(wing.WingPivot + new Vector3(0f, HumanSize.y * 0.5f, 0f));
 
         Vector3 velocity = Human.MoveSystem.GetVelocityAtPoint(globalPoint);
 
         Vector3 resistanceNormal = globalNormal * -Mathf.Sign(Vector3.Dot(velocity, globalNormal));
         float vDot = -Vector3.Dot(velocity, resistanceNormal);
+        vDot = Mathf.Sqrt(vDot);
 
         Vector3 resistance = resistanceNormal * vDot * windage * (wing.WingOpenAngle / wingOpenAngle);
         Human.MoveSystem.AddForceAtPoint(resistance, globalPoint);
-
-        Debug.DrawRay(globalPoint, globalNormal, Color.red);
     }
 
     public void OnCollisionEnter(Vector3 point, Vector3 normal, Vector3 impulse)

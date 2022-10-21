@@ -22,7 +22,7 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         Camera.onPreRender += UpdateCamera;
 
         var defaultCameraMode = new PlayerStandardCameraControllerMode();
-        var flightCameraMode = new PlayerFlightCameraControllerMode();
+        var flightCameraMode = new PlayerFlightCameraControllerMode(this);
 
         cameraControllerModes = new SafeDictionary<string, IPlayerCameraMode>(new Dictionary<string, IPlayerCameraMode>()
         {
@@ -82,18 +82,17 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
 
     protected override void OnUpdate()
     {
-        CommonWingsOpenness = Input.GetKey(KeyCode.Space) ? 0f : 1f;
-
         bool shift = Input.GetKey(KeyCode.LeftShift);
+        CommonWingsOpenness = Input.GetKey(KeyCode.Space) ? 0f : (shift ? 1.5f : 1f);
 
-        ForwardWingsOpenness = (shift && Input.GetKey(KeyCode.W) ? 0f : 1f);
-        BackWingsOpenness = (shift && Input.GetKey(KeyCode.S) ? 0f : 1f);
-        LeftWingOpenness = (shift && Input.GetKey(KeyCode.A)) ? 0f : 1f;
-        RightWingOpenness = (shift && Input.GetKey(KeyCode.D)) ? 0f : 1f;
+        ForwardWingsOpenness = 1f;// (shift && Input.GetKey(KeyCode.W) ? 0f : 1f);
+        BackWingsOpenness = 1f;// (shift && Input.GetKey(KeyCode.S) ? 0f : 1f);
+        LeftWingOpenness = 1f;// (shift && Input.GetKey(KeyCode.A)) ? 0f : 1f;
+        RightWingOpenness = 1f;// (shift && Input.GetKey(KeyCode.D)) ? 0f : 1f;
         var rotationInput = new Vector2(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
 
         ForwardWingRotationNormalized = new Vector2(rotationInput.y, 0f);
-        BackWingRotationNormalized = new Vector2(rotationInput.x, 0f);
+        BackWingRotationNormalized = new Vector2(rotationInput.x, rotationInput.y);
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
