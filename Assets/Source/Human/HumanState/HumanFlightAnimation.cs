@@ -11,6 +11,8 @@ public sealed partial class HumanFlightState
             this.state = state;
         }
 
+        const float wingOpenAngle = 60f;
+
         protected override void Animate()
         {
             float cosmeticRotationMultiplier = 1f;
@@ -23,14 +25,14 @@ public sealed partial class HumanFlightState
 
             Vector2 backWingRotation = state.backWing.WingRotation * cosmeticRotationMultiplier;
 
-            LeftLeg.Rotate(Quaternion.Euler(backWingRotation.x * 0.5f, backWingRotation.y * 0.5f, -state.backWing.WingOpenAngle * 0.5f + legAngleBase));
-            RightLeg.Rotate(Quaternion.Euler(backWingRotation.x * 0.5f, backWingRotation.y * 0.5f, state.backWing.WingOpenAngle * 0.5f - legAngleBase));
+            LeftLeg.Rotate(Quaternion.Euler(backWingRotation.x * 0.5f, backWingRotation.y * 0.5f, -state.backWing.WingOpenAngleNormalized * wingOpenAngle * 0.5f + legAngleBase));
+            RightLeg.Rotate(Quaternion.Euler(backWingRotation.x * 0.5f, backWingRotation.y * 0.5f, state.backWing.WingOpenAngleNormalized * wingOpenAngle * 0.5f - legAngleBase));
 
             LeftKnee.Rotate(Quaternion.Euler(backWingRotation.x * 0.5f - kneeAngleBase, 0f, 0f));
             RightKnee.Rotate(Quaternion.Euler(backWingRotation.x * 0.5f - kneeAngleBase, 0f, 0f));
 
-            LeftArm.Rotate(Quaternion.Euler(state.leftWing.WingRotation.x * cosmeticRotationMultiplier, state.leftWing.WingRotation.y * cosmeticRotationMultiplier, -state.leftWing.WingOpenAngle));
-            RightArm.Rotate(Quaternion.Euler(state.rightWing.WingRotation.x * cosmeticRotationMultiplier, state.rightWing.WingRotation.y * cosmeticRotationMultiplier, state.rightWing.WingOpenAngle));
+            LeftArm.Rotate(Quaternion.Euler(state.leftWing.WingRotation.x * cosmeticRotationMultiplier, state.leftWing.WingRotation.y * cosmeticRotationMultiplier, -state.leftWing.WingOpenAngleNormalized * wingOpenAngle));
+            RightArm.Rotate(Quaternion.Euler(state.rightWing.WingRotation.x * cosmeticRotationMultiplier, state.rightWing.WingRotation.y * cosmeticRotationMultiplier, state.rightWing.WingOpenAngleNormalized * wingOpenAngle));
         }
     }
 }
