@@ -4,7 +4,10 @@ public interface IMoveSystem : IEventsHandler
 {
     Vector3 Velocity { get; set; }
     Vector3 GroundNormal { get; }
-    bool Enabled { get; set; }
+    bool EnableCollisions { get; set; }
+    bool EnablePhysics { get; set; }
+    bool EnableFreeRotation { get; set; }
+
     void Move(Vector3 velocity);
     Vector3 Center { get; }
     bool IsOnGround { get; }

@@ -9,7 +9,6 @@ public abstract class HumanState : EventsHandler, IControlAcceptor, IState<strin
 
     public HumanState()
     {
-        animation = CreateAnimation();
     }
 
     protected abstract IHumanAnimation CreateAnimation();
@@ -26,6 +25,7 @@ public abstract class HumanState : EventsHandler, IControlAcceptor, IState<strin
     {
         Key = CreateName();
         Human = controlProvider;
+        animation = CreateAnimation();
         return this;
     }
 

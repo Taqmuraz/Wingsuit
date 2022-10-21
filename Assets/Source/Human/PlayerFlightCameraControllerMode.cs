@@ -2,6 +2,6 @@
 
 public sealed class PlayerFlightCameraControllerMode : IPlayerCameraMode
 {
-    public Vector3 Offset => new Vector3(1f, 0.75f, -2f);
-    public float Fov => 45f;
+    public Vector3 Offset => new Vector3(0f, 0.75f, -3f);
+    public float Fov => 90f;
 }

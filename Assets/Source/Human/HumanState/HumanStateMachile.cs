@@ -12,5 +12,6 @@ public sealed class HumanStateMachile : StateMachine<string, HumanState, IHumanC
     protected override IEnumerable<HumanState> CreateStates()
     {
         yield return new HumanDefaultState().Initialize(human);
+        yield return new HumanFlightState().Initialize(human);
     }
 }

@@ -2,7 +2,12 @@
 
 public sealed class EmptyTransformState : ITransformState
 {
-    public Vector3 Position { get; set; }
+    public Vector3 Position
+    {
+        get => Vector3.zero;
+        set { }
+    }
+
     public Quaternion Rotation
     {
         get => Quaternion.identity;
@@ -31,6 +36,17 @@ public sealed class EmptyTransformState : ITransformState
     public Vector3 Right
     {
         get => Vector3.right;
+        set { }
+    }
+
+    public Vector3 LocalPosition
+    {
+        get => Vector3.zero;
+        set { }
+    }
+    public Quaternion LocalRotation
+    {
+        get => Quaternion.identity;
         set { }
     }
 }

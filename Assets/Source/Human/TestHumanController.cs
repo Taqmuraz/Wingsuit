@@ -18,4 +18,5 @@ public sealed class TestHumanController : HumanController, IHumanControlProvider
     public Vector3 SourceView => Vector3.forward;
     public Vector3 DesiredView => Vector3.forward;
     public Vector3 InputMovementLocal { get; }
+    public IFlightInput InputFlight { get; }
 }

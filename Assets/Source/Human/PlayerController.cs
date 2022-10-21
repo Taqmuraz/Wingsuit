@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class PlayerController : HumanController, IHumanControlProvider, IControlAction
+public sealed class PlayerController : HumanController, IHumanControlProvider, IControlAction, IFlightInput
 {
     public override IHumanControlProvider ControlProvider => this;
     ICameraController cameraController;
@@ -72,8 +72,28 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         deferredActions.Enqueue(action);
     }
 
+    public float CommonWingsOpenness { get; private set; }
+    public float ForwardWingsOpenness { get; private set; }
+    public float BackWingsOpenness { get; private set; }
+    public float LeftWingOpenness { get; private set; }
+    public float RightWingOpenness { get; private set; }
+    public float ForwardWingRotationNormalized { get; private set; }
+    public float BackWingRotationNormalized { get; private set; }
+
     protected override void OnUpdate()
     {
+        CommonWingsOpenness = Input.GetKey(KeyCode.Space) ? 0f : 1f;
+
+        bool shift = Input.GetKey(KeyCode.LeftShift);
+
+        ForwardWingsOpenness = Input.GetKey(KeyCode.W) ? 0f : 1f;
+        BackWingsOpenness = Input.GetKey(KeyCode.S) ? 0f : 1f;
+        LeftWingOpenness = (shift && Input.GetKey(KeyCode.A)) ? 0f : 1f;
+        RightWingOpenness = (shift && Input.GetKey(KeyCode.D)) ? 0f : 1f;
+        var horizontalInput = Input.GetAxis("Horizontal");
+        ForwardWingRotationNormalized = horizontalInput;
+        BackWingRotationNormalized = -horizontalInput;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             LevelManager.LoadLevel(0);
@@ -92,4 +112,6 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         }
         deferredActions.Clear();
     }
+
+    IFlightInput IHumanControlProvider.InputFlight => this;
 }

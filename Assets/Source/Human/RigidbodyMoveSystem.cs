@@ -11,7 +11,8 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
     public RigidbodyMoveSystem(Rigidbody rigidbody)
     {
         this.rigidbody = rigidbody;
-        rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        EnableFreeRotation = false;
+        rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         collider = rigidbody.GetComponent<CapsuleCollider>();
         humanMask = ~LayerMask.GetMask(HumanController.HumanLayerName, HumanController.HumanElementLayerName);
     }
@@ -44,7 +45,7 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
     {
     }
 
-    public bool IsOnGround { get; private set; }
+    public bool IsOnGround { get; private set; } = true;
 
     public void Move(Vector3 velocity)
     {
@@ -64,14 +65,30 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
         }
     }
 
-    bool enabled = true;
-    public bool Enabled
+    public bool EnableCollisions
     {
-        get => enabled;
+        get => collider.enabled;
+        set
+        {
+            collider.enabled = value;
+        }
+    }
+    public bool EnablePhysics
+    {
+        get => rigidbody.isKinematic;
         set
         {
             rigidbody.isKinematic = !value;
-            collider.enabled = value;
+        }
+    }
+    bool enableFreeRotation;
+    public bool EnableFreeRotation
+    {
+        get => enableFreeRotation;
+        set
+        {
+            enableFreeRotation = value;
+            rigidbody.constraints = value ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeRotation;
         }
     }
 }
