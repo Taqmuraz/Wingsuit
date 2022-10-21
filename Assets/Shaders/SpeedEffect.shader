@@ -55,8 +55,11 @@ Shader "Unlit/SpeedEffect"
                 
                 if (dist > range)
                 {
-                    s = normalize(uv - 0.5) * (sin(_Time.w * _EffectSpeed) + 1) * 0.5 * _Strength * _Speed * (dist - range);
-                    c = (c + tex2D(_MainTex, i.uv - s)) * 0.5;
+                    for (int j = 0; j < 4; j++)
+                    {
+                        s = normalize(uv - 0.5) * _Strength * _Speed * (dist - range) * (j + 1);
+                        c = (c + tex2D(_MainTex, i.uv - s)) * 0.5;
+                    }
                 }
                 return c;
             }

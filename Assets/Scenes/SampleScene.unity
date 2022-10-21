@@ -6582,8 +6582,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 19a4e94da16ef01419b791ac166d3596, type: 3}
-  strength: 0.05
-  effectSpeed: 100
+  strength: 0.025
+  effectSpeed: 50
   target: {fileID: 1993619552}
   maxSpeed: 50
   minRange: 0
