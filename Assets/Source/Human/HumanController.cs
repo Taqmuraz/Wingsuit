@@ -13,6 +13,7 @@ public abstract class HumanController : MonoBehaviour, IHumanController
         controller.bonesMap = provider.HumanBones.ToDictionary(b => b.Name, b => b.Transform);
     }
 
+    List<ICollisionHandler> collisionHandlers = new List<ICollisionHandler>();
     List<IEventsHandler> eventListeners = new List<IEventsHandler>();
     HumanStateMachile stateMachile;
     Dictionary<string, Transform> bonesMap;
@@ -89,4 +90,23 @@ public abstract class HumanController : MonoBehaviour, IHumanController
     }
 
     public IRagdollSystem RagdollSystem { get; private set; }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.contactCount != 0)
+        {
+            var contact = collision.contacts[0];
+            foreach (var handler in collisionHandlers) handler.OnCollisionEnter(contact.point, contact.normal, collision.impulse);
+        }
+    }
+
+    public void SubscribeCollisionHandler(ICollisionHandler handler)
+    {
+        collisionHandlers.Add(handler);
+    }
+
+    public void UnsubscribeCollisionHandler(ICollisionHandler handler)
+    {
+        collisionHandlers.Remove(handler);
+    }
 }

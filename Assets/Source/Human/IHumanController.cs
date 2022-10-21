@@ -1,4 +1,4 @@
-﻿public interface IHumanController
+﻿public interface IHumanController : ICollisionSystem
 {
     IHumanControlProvider ControlProvider { get; }
     IMoveSystem MoveSystem { get; }

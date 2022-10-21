@@ -91,4 +91,14 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
             rigidbody.constraints = value ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeRotation;
         }
     }
+
+    public Vector3 GetVelocityAtPoint(Vector3 point)
+    {
+        return rigidbody.GetPointVelocity(point);
+    }
+
+    public void AddForceAtPoint(Vector3 force, Vector3 point)
+    {
+        rigidbody.AddForceAtPosition(force, point, ForceMode.Acceleration);
+    }
 }

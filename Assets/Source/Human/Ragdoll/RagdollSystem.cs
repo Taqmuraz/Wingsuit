@@ -6,16 +6,14 @@ public sealed class RagdollSystem : IRagdollSystem
     IEnumerable<IRagdollElement> elements;
     Rigidbody rootBody;
     Collider rootCollider;
-    Animator rootAnimator;
     IRagdollElement rootElement;
 
-    public RagdollSystem(Animator rootAnimator, Rigidbody rootBody, Collider rootCollider, IRagdollElement rootElement, IRagdollElement[] elements)
+    public RagdollSystem(Rigidbody rootBody, Collider rootCollider, IRagdollElement rootElement, IRagdollElement[] elements)
     {
         this.elements = elements;
         this.rootCollider = rootCollider;
         this.rootBody = rootBody;
         this.rootElement = rootElement;
-        this.rootAnimator = rootAnimator;
     }
 
     public IRagdollState CaptureState()
@@ -38,9 +36,5 @@ public sealed class RagdollSystem : IRagdollSystem
     public void SetElementEnabled(IRagdollElement element, bool enabled)
     {
         element.SetEnabled(enabled);
-        // animator refresh
-        {
-            rootAnimator.Rebind();
-        }
     }
 }
