@@ -1,0 +1,92 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public abstract class HumanController : MonoBehaviour, IHumanController
+{
+    public static string HumanLayerName => "Human";
+    public static string HumanElementLayerName => "HumanElement";
+
+    public static void BuildHuman<TController>(GameObject instance, IHumanBuildInfoProvider provider) where TController : HumanController
+    {
+        var controller = instance.AddComponent<TController>();
+        controller.bonesMap = provider.HumanBones.ToDictionary(b => b.Name, b => b.Transform);
+    }
+
+    List<IEventsHandler> eventListeners = new List<IEventsHandler>();
+    HumanStateMachile stateMachile;
+    Dictionary<string, Transform> bonesMap;
+    Dictionary<string, ITransformState> boneStatesMap;
+
+    Dictionary<string, object> variables = new Dictionary<string, object>();
+
+    public T GetVariable<T>(string name)
+    {
+        if (variables.TryGetValue(name, out var result)) return (T)result;
+        else return default;
+    }
+    public void SetVariable(string name, object value)
+    {
+        variables[name] = value;
+    }
+
+    T AddListener<T>(T listener) where T : IEventsHandler
+    {
+        eventListeners.Add(listener);
+        return listener;
+    }
+    void CallEvent(string name)
+    {
+        foreach (var l in eventListeners) l.CallEvent(name);
+    }
+
+    void Awake()
+    {
+        
+    }
+    void OnDestroy()
+    {
+        OnFinalize();
+    }
+
+    protected virtual void Initialize() { }
+    protected virtual void OnUpdate() { }
+    protected virtual void OnFinalize() { }
+
+    void Start()
+    {
+        RagdollSystem = RagdollBuilder.BuildForHuman(this, gameObject);
+        Initialize();
+
+        MoveSystem = AddListener(CreateMoveSystem());
+        TransformState = new StandardTransformState(transform);
+        stateMachile = AddListener(new HumanStateMachile(this));
+    }
+
+    private void Update()
+    {
+        CallEvent("Update");
+        OnUpdate();
+    }
+    void FixedUpdate()
+    {
+        CallEvent("FixedUpdate");
+    }
+    void LateUpdate()
+    {
+        CallEvent("LateUpdate");
+    }
+
+    public abstract IHumanControlProvider ControlProvider { get; }
+    protected abstract IMoveSystem CreateMoveSystem();
+    
+    public IMoveSystem MoveSystem { get; private set; }
+    public ITransformState TransformState { get; private set; }
+
+    public ITransformState GetBone(string name)
+    {
+        return new StandardTransformState(bonesMap[name]);
+    }
+
+    public IRagdollSystem RagdollSystem { get; private set; }
+}

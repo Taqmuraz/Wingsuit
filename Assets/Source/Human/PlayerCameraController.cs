@@ -1,0 +1,45 @@
+﻿using UnityEngine;
+
+public sealed class PlayerCameraController : ICameraController
+{
+    IHumanController player;
+    Vector3 euler;
+    float fov = 60f;
+    Vector3 offset = new Vector3(0f, 0f, -1f);
+    int humanMask;
+    ITransformState target;
+
+    IInputProvider Input => InputProvider.GetInputProvider();
+
+    public PlayerCameraController(IHumanController player)
+    {
+        this.player = player;
+        target = player.GetBone("Target");
+        humanMask = ~LayerMask.GetMask(HumanController.HumanLayerName, HumanController.HumanElementLayerName);
+    }
+
+    public void UpdateCamera(Camera camera, IPlayerCameraMode mode)
+    {
+        var transform = camera.transform;
+
+        Vector3 input = new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0f);
+        euler += input;
+        euler.x = Mathf.Clamp(euler.x, -80f, 80f);
+
+        float t = Time.deltaTime * 5f;
+        fov = Mathf.Lerp(fov, mode.Fov, t);
+        offset = Vector3.Lerp(offset, mode.Offset, t);
+
+        camera.fieldOfView = fov;
+        transform.eulerAngles = euler;
+
+        Vector3 dir = transform.TransformVector(offset);
+        float distance = dir.magnitude;
+        Vector3 target = this.target.Position;
+        if (Physics.Raycast(target, dir, out RaycastHit hit, distance, humanMask))
+        {
+            distance = hit.distance;
+        }
+        transform.position = target + dir.normalized * distance;
+    }
+}
