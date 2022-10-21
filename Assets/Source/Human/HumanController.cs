@@ -96,7 +96,7 @@ public abstract class HumanController : MonoBehaviour, IHumanController
         if (collision.contactCount != 0)
         {
             var contact = collision.contacts[0];
-            foreach (var handler in collisionHandlers) handler.OnCollisionEnter(contact.point, contact.normal, collision.impulse);
+            foreach (var handler in collisionHandlers) handler.OnCollisionEnter(contact.point, contact.normal, collision.relativeVelocity);
         }
     }
 

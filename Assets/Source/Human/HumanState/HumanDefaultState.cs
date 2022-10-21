@@ -1,4 +1,6 @@
-﻿public sealed partial class HumanDefaultState : HumanMovementState
+﻿using UnityEngine;
+
+public sealed partial class HumanDefaultState : HumanMovementState
 {
     protected override float MoveSpeed => 5f;
     protected override string IdleAnimation => "Idle";

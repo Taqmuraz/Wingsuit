@@ -10,5 +10,6 @@ public sealed class PlayerStandardCameraControllerMode : IPlayerCameraMode
         Vector3 input = new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0f);
         euler += input;
         euler.x = Mathf.Clamp(euler.x, -80f, 80f);
+        euler.z = 0f;
     }
 }

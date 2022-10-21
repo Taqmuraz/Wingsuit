@@ -48,8 +48,8 @@ public sealed partial class HumanFlightState : HumanState, ICollisionHandler
     DynamicWingControl rightWing = new DynamicWingControl(new Vector3(0.25f, 0f, 0.25f));
     DynamicWingControl backWing = new DynamicWingControl(new Vector3(0f, 0f, -0.25f));
 
-    IWingControl bodySide = new StaticWing(wingOpenAngle * 0.5f, new Vector2(0f, 90f), new Vector3(0f, 0f, -0.25f));
-    IWingControl bodyHorizontal = new StaticWing(wingOpenAngle * 0.5f, new Vector2(0f, 0f), new Vector3(0f, 0f, -0.25f));
+    IWingControl bodySide = new StaticWing(wingOpenAngle, new Vector2(0f, 90f), new Vector3(0f, 0f, -0.25f));
+    IWingControl bodyHorizontal = new StaticWing(wingOpenAngle, new Vector2(0f, 0f), new Vector3(0f, 0f, -0.25f));
 
     protected override IHumanAnimation CreateAnimation()
     {
@@ -118,6 +118,14 @@ public sealed partial class HumanFlightState : HumanState, ICollisionHandler
 
     public void OnCollisionEnter(Vector3 point, Vector3 normal, Vector3 impulse)
     {
-        MoveToState("Disabled");
+        if (normal.y > 0.9f && impulse.magnitude < 10f)
+        {
+            Human.TransformState.Position = point;
+            MoveToState("Default");
+        }
+        else
+        {
+            MoveToState("Disabled");
+        }
     }
 }

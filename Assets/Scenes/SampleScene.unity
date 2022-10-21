@@ -7055,6 +7055,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7128,6 +7129,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13df3b2891a2b52498eaf6a8a82355eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader: {fileID: 4800000, guid: 19a4e94da16ef01419b791ac166d3596, type: 3}
+  strength: 0.05
+  effectSpeed: 100
+  target: {fileID: 1993619552}
+  maxSpeed: 50
+  minRange: 0
 --- !u!1 &965839020 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6347898057783930161, guid: b4f0a696d66508d46b92589377abd7b4, type: 3}
@@ -13856,6 +13875,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 2468262272248245958, guid: 5b9461cc69f5e2e4ebeffb2cba1eefd3, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 8098266cce43c78419b79ef599dfaf1f, type: 2}
+    - target: {fileID: 2468262272248245958, guid: 5b9461cc69f5e2e4ebeffb2cba1eefd3, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2468262272248245958, guid: 5b9461cc69f5e2e4ebeffb2cba1eefd3, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 534e90349abb4fc4680c6176e5074ab9, type: 2}
     - target: {fileID: 2663083925744415509, guid: 5b9461cc69f5e2e4ebeffb2cba1eefd3, type: 3}
       propertyPath: m_Name
       value: LeftArm
@@ -14079,6 +14110,11 @@ MonoBehaviour:
     transform: {fileID: 682374434}
   - name: Head
     transform: {fileID: 892318740}
+--- !u!4 &1993619552 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1045380920185606645, guid: 5b9461cc69f5e2e4ebeffb2cba1eefd3, type: 3}
+  m_PrefabInstance: {fileID: 1993619547}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1994431483 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2964774725532633760, guid: b4f0a696d66508d46b92589377abd7b4, type: 3}

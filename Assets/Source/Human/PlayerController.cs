@@ -7,6 +7,9 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
     ICameraController cameraController;
     string currentStateKey;
     Camera mainCamera;
+    Vector3 startPosition;
+
+    IControlAction resetAction = new MoveToStateAction("Default", "Disabled");
 
     SafeDictionary<string, IPlayerCameraMode> cameraControllerModes;
 
@@ -28,6 +31,8 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         {
             ["Flight"] = flightCameraMode,
         }, () => defaultCameraMode);
+
+        startPosition = transform.position;
     }
     protected override void OnFinalize()
     {
@@ -83,7 +88,7 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
     protected override void OnUpdate()
     {
         bool shift = Input.GetKey(KeyCode.LeftShift);
-        CommonWingsOpenness = Input.GetKey(KeyCode.Space) ? 0f : (shift ? 1.5f : 1f);
+        CommonWingsOpenness = Input.GetKey(KeyCode.Space) ? 0f : (shift ? 1f : 0.5f);
 
         ForwardWingsOpenness = 1f;// (shift && Input.GetKey(KeyCode.W) ? 0f : 1f);
         BackWingsOpenness = 1f;// (shift && Input.GetKey(KeyCode.S) ? 0f : 1f);
@@ -97,6 +102,11 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             LevelManager.LoadLevel(0);
+        }
+        if (Input.GetKey(KeyCode.R))
+        {
+            EnqueueAction(resetAction);
+            TransformState.Position = startPosition;
         }
     }
 
