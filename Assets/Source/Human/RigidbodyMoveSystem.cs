@@ -13,6 +13,7 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
         this.rigidbody = rigidbody;
         EnableFreeRotation = false;
         rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        rigidbody.mass = 80f;
         collider = rigidbody.GetComponent<CapsuleCollider>();
         humanMask = ~LayerMask.GetMask(HumanController.HumanLayerName, HumanController.HumanElementLayerName);
     }

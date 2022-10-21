@@ -18,11 +18,11 @@ public sealed partial class HumanFlightState
 
             float legAngleBase = 15f;
 
-            LeftLeg.Rotate(Quaternion.Euler(0f, state.backWing.WingRotation, -state.backWing.WingOpenAngle * 0.5f + legAngleBase));
-            RightLeg.Rotate(Quaternion.Euler(0f, state.backWing.WingRotation, state.backWing.WingOpenAngle * 0.5f - legAngleBase));
+            LeftLeg.Rotate(Quaternion.Euler(state.backWing.WingRotation.x, state.backWing.WingRotation.y, -state.backWing.WingOpenAngle * 0.5f + legAngleBase));
+            RightLeg.Rotate(Quaternion.Euler(state.backWing.WingRotation.x, state.backWing.WingRotation.y, state.backWing.WingOpenAngle * 0.5f - legAngleBase));
 
-            LeftArm.Rotate(Quaternion.Euler(0f, state.leftWing.WingRotation, -state.leftWing.WingOpenAngle));
-            RightArm.Rotate(Quaternion.Euler(0f, state.rightWing.WingRotation, state.rightWing.WingOpenAngle));
+            LeftArm.Rotate(Quaternion.Euler(state.leftWing.WingRotation.x, state.leftWing.WingRotation.y, -state.leftWing.WingOpenAngle));
+            RightArm.Rotate(Quaternion.Euler(state.rightWing.WingRotation.x, state.rightWing.WingRotation.y, state.rightWing.WingOpenAngle));
         }
     }
 }

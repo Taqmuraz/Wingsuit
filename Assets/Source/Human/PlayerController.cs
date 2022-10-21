@@ -77,8 +77,8 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
     public float BackWingsOpenness { get; private set; }
     public float LeftWingOpenness { get; private set; }
     public float RightWingOpenness { get; private set; }
-    public float ForwardWingRotationNormalized { get; private set; }
-    public float BackWingRotationNormalized { get; private set; }
+    public Vector2 ForwardWingRotationNormalized { get; private set; }
+    public Vector2 BackWingRotationNormalized { get; private set; }
 
     protected override void OnUpdate()
     {
@@ -86,13 +86,14 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
 
         bool shift = Input.GetKey(KeyCode.LeftShift);
 
-        ForwardWingsOpenness = Input.GetKey(KeyCode.W) ? 0f : 1f;
-        BackWingsOpenness = Input.GetKey(KeyCode.S) ? 0f : 1f;
+        ForwardWingsOpenness = (shift && Input.GetKey(KeyCode.W) ? 0f : 1f);
+        BackWingsOpenness = (shift && Input.GetKey(KeyCode.S) ? 0f : 1f);
         LeftWingOpenness = (shift && Input.GetKey(KeyCode.A)) ? 0f : 1f;
         RightWingOpenness = (shift && Input.GetKey(KeyCode.D)) ? 0f : 1f;
-        var horizontalInput = Input.GetAxis("Horizontal");
-        ForwardWingRotationNormalized = horizontalInput;
-        BackWingRotationNormalized = -horizontalInput;
+        var rotationInput = new Vector2(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
+
+        ForwardWingRotationNormalized = new Vector2(rotationInput.y, 0f);
+        BackWingRotationNormalized = new Vector2(rotationInput.x, 0f);
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
