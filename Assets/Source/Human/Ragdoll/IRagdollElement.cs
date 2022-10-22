@@ -2,7 +2,7 @@
 
 public interface IRagdollElement
 {
-    void Initialize(IRagdollElement[] children);
+    void Initialize(IHumanController human, IRagdollElement[] children);
     void WriteState(RagdollElementState state);
     RagdollElementState ReadState();
 

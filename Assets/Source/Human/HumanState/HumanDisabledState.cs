@@ -16,11 +16,11 @@
     [BehaviourEvent]
     void OnEnter()
     {
-        Human.MoveSystem.EnableCollisions = false;
-        Human.MoveSystem.EnablePhysics = false;
-
         enterState = Human.RagdollSystem.CaptureState();
         Human.RagdollSystem.SetEnabled(true);
+
+        Human.MoveSystem.EnableCollisions = false;
+        Human.MoveSystem.EnablePhysics = false;
     }
     [BehaviourEvent]
     void OnExit()

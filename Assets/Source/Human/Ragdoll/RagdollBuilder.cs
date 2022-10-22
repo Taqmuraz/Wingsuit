@@ -21,6 +21,6 @@ public static class RagdollBuilder
         var rootElement = elements.First(e => e.IsRoot);
         rootElement.SetEnabled(false);
 
-        return new RagdollSystem(gameObject.GetComponent<Rigidbody>(), gameObject.GetComponent<Collider>(), rootElement, elements);
+        return new RagdollSystem(rootElement, elements);
     }
 }

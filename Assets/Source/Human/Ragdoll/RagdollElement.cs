@@ -12,6 +12,7 @@ public abstract class RagdollElement<TCollider> : IRagdollElement where TCollide
     const float BodyDensity = 1000f;
     public bool IsRoot { get; private set; }
     IEnumerable<IRagdollElement> children;
+    IHumanController human;
 
     protected abstract float CalculateMass();
 
@@ -37,8 +38,9 @@ public abstract class RagdollElement<TCollider> : IRagdollElement where TCollide
         rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 
-    void IRagdollElement.Initialize(IRagdollElement[] children)
+    void IRagdollElement.Initialize(IHumanController human, IRagdollElement[] children)
     {
+        this.human = human;
         this.children = children;
 
         SetupCollider(collider);
@@ -71,6 +73,11 @@ public abstract class RagdollElement<TCollider> : IRagdollElement where TCollide
     {
         rigidbody.isKinematic = !enabled;
         this.enabled = enabled;
+
+        if (enabled)
+        {
+            rigidbody.velocity = human.MoveSystem.Velocity;
+        }
 
         foreach (var child in children)
         {

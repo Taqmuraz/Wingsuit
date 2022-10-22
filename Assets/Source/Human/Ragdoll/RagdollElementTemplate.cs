@@ -32,7 +32,7 @@ public abstract class RagdollElementTemplate : MonoBehaviour
     public void InitializeElement(IHumanController human)
     {
         this.human = human;
-        element.Initialize(TraceChildren());
+        element.Initialize(human, TraceChildren());
     }
 
     protected IRagdollElement[] TraceChildren()
