@@ -7,8 +7,8 @@ public sealed class TimurZarubinAirForceEngine : IAirForceEngine
         Vector3 globalNormal = wing.WingNormal;
         Vector3 globalPoint = transformState.LocalToWorld.MultiplyPoint3x4(wing.WingPivot);
 
-        float airDensity = 1f;
-        float c = 1f;
+        float airDensity = 2f;
+        float c = 2f;
 
         Vector3 velocity = moveSystem.GetVelocityAtPoint(globalPoint);
 
@@ -16,7 +16,7 @@ public sealed class TimurZarubinAirForceEngine : IAirForceEngine
 
         float areaProjection = -Vector3.Dot(resistanceNormal, velocity.normalized) * wing.WingArea;
         float velocityMagnitude = velocity.magnitude;
-        float m = 80f;
+        float m = moveSystem.Mass;
 
         float AccelerationPartFunction(float arg)
         {
