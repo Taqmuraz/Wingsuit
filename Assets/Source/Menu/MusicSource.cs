@@ -6,7 +6,7 @@ public sealed class MusicSource : MonoBehaviour
     [SerializeField] AudioClip[] clips;
     [SerializeField] AudioSource source;
 
-    public static bool MusicEnabled { get; set; } = true;
+    public static bool MusicEnabled { get; set; } = false;
 
     private IEnumerator Start()
     {

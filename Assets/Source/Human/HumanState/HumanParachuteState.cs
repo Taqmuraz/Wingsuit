@@ -16,7 +16,7 @@ public sealed partial class HumanParachuteState : HumanAirState
         public float WingPotential { get; set; }
         public Vector3 WingNormal => WingPivot.normalized;
         public Vector3 WingPivot { get; }
-        float IWingControl.WingArea => WingPotential * 0.25f;
+        float IWingControl.WingArea => WingPotential;
     }
 
     HumanParachuteEquipmentElement parachute;

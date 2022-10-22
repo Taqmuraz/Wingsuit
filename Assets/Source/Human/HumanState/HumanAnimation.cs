@@ -26,6 +26,14 @@ public abstract class HumanAnimation : EventsHandler, IHumanAnimation
         {
             State.LocalRotation = preOffset * InitialLocalRotation;
         }
+        public void PreRotateSmooth(Quaternion preOffset)
+        {
+            State.LocalRotation = Quaternion.Lerp(State.LocalRotation, preOffset * InitialLocalRotation, Time.deltaTime * 5f);
+        }
+        public void RotateSmooth(Quaternion offset)
+        {
+            State.LocalRotation = Quaternion.Lerp(State.LocalRotation, InitialLocalRotation * offset, Time.deltaTime * 5f);
+        }
         public void Reset()
         {
             State.LocalPosition = InitialLocalPosition;

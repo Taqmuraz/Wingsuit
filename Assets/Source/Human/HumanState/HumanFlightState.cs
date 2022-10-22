@@ -59,12 +59,12 @@ public sealed partial class HumanFlightState : HumanAirState
     [BehaviourEvent]
     void Initialize()
     {
-        leftWing = new DynamicWingControl(new Vector3(-0.25f, 0f, 0.25f), this);
-        rightWing = new DynamicWingControl(new Vector3(0.25f, 0f, 0.25f), this);
+        leftWing = new DynamicWingControl(new Vector3(-0.15f, 0f, 0.15f), this);
+        rightWing = new DynamicWingControl(new Vector3(0.15f, 0f, 0.15f), this);
         backWing = new DynamicWingControl(new Vector3(0f, 0f, -0.25f), this);
 
-        bodySide = new StaticWing(1f, new Vector2(0f, 90f), new Vector3(0f, 0f, -0.25f), this);
-        bodyHorizontal = new StaticWing(1f, new Vector2(0f, 0f), new Vector3(0f, 0f, -0.25f), this);
+        bodySide = new StaticWing(1f, new Vector2(0f, 90f), new Vector3(0f, 0f, -0.2f), this);
+        bodyHorizontal = new StaticWing(1f, new Vector2(0f, 0f), new Vector3(0f, 0f, -0.2f), this);
     }
 
     DynamicWingControl leftWing;

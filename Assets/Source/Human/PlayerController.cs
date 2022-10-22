@@ -12,6 +12,8 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
     IControlAction resetAction = new MoveToStateAction("Default", "Disabled");
     IControlAction flightToParachuteAction = new MoveToStateAction("OpenParachute", "Flight");
     IControlAction parachuteToFlightAction = new MoveToStateAction("Flight", "Parachute");
+    IControlAction flightToRock = new MoveToStateAction("Rock", "Flight");
+    IControlAction rockToFlight = new MoveToStateAction("Flight", "Rock");
 
     SafeDictionary<string, IPlayerCameraMode> cameraControllerModes;
 
@@ -124,6 +126,11 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         {
             EnqueueAction(resetAction);
             TransformState.Position = startPosition;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            EnqueueAction(rockToFlight);
+            EnqueueAction(flightToRock);
         }
     }
 

@@ -34,6 +34,8 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
     [BehaviourEvent]
     void FixedUpdate()
     {
+        rigidbody.constraints = EnableFreeRotation ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeRotation;
+
         IsOnGround = Physics.CheckSphere(rigidbody.transform.position + new Vector3(0f, Size.x * 0.25f, 0f), Size.x * 0.3f, humanMask);
         if (IsOnGround && Physics.Raycast(rigidbody.transform.position + new Vector3(0f, 0.1f, 0f), Vector3.down, out RaycastHit hit, 0.5f, humanMask))
         {
@@ -82,16 +84,7 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
             rigidbody.isKinematic = !value;
         }
     }
-    bool enableFreeRotation;
-    public bool EnableFreeRotation
-    {
-        get => enableFreeRotation;
-        set
-        {
-            enableFreeRotation = value;
-            rigidbody.constraints = value ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeRotation;
-        }
-    }
+    public bool EnableFreeRotation { get; set; }
 
     public Vector3 GetVelocityAtPoint(Vector3 point)
     {
