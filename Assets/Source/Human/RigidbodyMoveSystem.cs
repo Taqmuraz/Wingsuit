@@ -100,6 +100,6 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
 
     public void AddForceAtPoint(Vector3 force, Vector3 point)
     {
-        rigidbody.AddForceAtPosition(force, point, ForceMode.Acceleration);
+        rigidbody.AddForceAtPosition(force, point, ForceMode.Force);
     }
 }

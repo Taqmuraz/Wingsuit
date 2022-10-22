@@ -1,0 +1,11 @@
+Controls :
+
+R -- restart level
+W, A, S, D -- flight control
+Left shift -- open wings wider
+Tab -- open/close parachute
+Left arrow -- hide left wing
+Right arrow -- hide right wing
+Up arrow -- hide left and right wings
+Down arrow -- hide back wing
+Space -- hide all wings (free fall)

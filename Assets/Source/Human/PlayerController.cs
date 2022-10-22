@@ -84,7 +84,8 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
     public float BackWingsOpenness { get; private set; }
     public float LeftWingOpenness { get; private set; }
     public float RightWingOpenness { get; private set; }
-    public Vector2 ForwardWingRotationNormalized { get; private set; }
+    public Vector2 LeftWingRotationNormalized { get; private set; }
+    public Vector2 RightWingRotationNormalized { get; private set; }
     public Vector2 BackWingRotationNormalized { get; private set; }
 
     protected override void OnUpdate()
@@ -98,8 +99,17 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         RightWingOpenness = Input.GetKey(KeyCode.RightArrow) ? 0f : 1f;
         var rotationInput = new Vector2(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
 
-        ForwardWingRotationNormalized = new Vector2(rotationInput.y, 0f);
+        LeftWingRotationNormalized = new Vector2(rotationInput.y, 0f);
+        RightWingRotationNormalized = new Vector2(-rotationInput.y, 0f);
+        
         BackWingRotationNormalized = new Vector2(rotationInput.x, rotationInput.y);
+
+        if (Input.GetKey(KeyCode.X))
+        {
+            float additionalAngle = 1f;
+            LeftWingRotationNormalized += new Vector2(0f, additionalAngle);
+            RightWingRotationNormalized += new Vector2(0f, -additionalAngle);
+        }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

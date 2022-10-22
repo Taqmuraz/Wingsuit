@@ -1,14 +1,21 @@
-﻿using Core.UserInterface.Basement;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public sealed class MainMenu : TemplateMenu
 {
     protected override IEnumerable<(string label, Action action)> GetButtons()
     {
-        yield return ("Play", () => LevelManager.LoadLevel(2));
-        yield return ("Settings", () => NextMenu = new SettingsMenu());
+        yield return ("Play City Level", () => LevelManager.LoadLevel(2));
+        yield return ("Play Mountains Level", () => LevelManager.LoadLevel(3));
+        if (MusicSource.MusicEnabled)
+        {
+            yield return ("Disable music in game", () => MusicSource.MusicEnabled = false);
+        }
+        else
+        {
+            yield return ("Enable music in game", () => MusicSource.MusicEnabled = true);
+        }
+        yield return ("Manual", () => NextMenu = new ManualMenu());
         yield return ("Exit", () => LevelManager.Quit());
     }
 }

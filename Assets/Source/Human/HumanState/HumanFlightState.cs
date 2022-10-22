@@ -25,7 +25,7 @@ public sealed partial class HumanFlightState : HumanAirState
     {
         HumanFlightState state;
 
-        public float WingArea { get; private set; }
+        public float WingOpenness { get; private set; }
         public Vector2 WingRotation { get; private set; }
         readonly float updateSpeed = 3f;
 
@@ -37,7 +37,7 @@ public sealed partial class HumanFlightState : HumanAirState
 
         public void UpdateOpenAngle(float angle)
         {
-            WingArea = Mathf.Lerp(WingArea, angle, Time.deltaTime * updateSpeed);
+            WingOpenness = Mathf.Lerp(WingOpenness, angle, Time.deltaTime * updateSpeed);
         }
         public void UpdateRotation(Vector2 rotation)
         {
@@ -46,6 +46,8 @@ public sealed partial class HumanFlightState : HumanAirState
 
         public Vector3 WingPivot { get; }
         public Vector3 WingNormal => state.WingRotationToNormal(WingRotation);
+
+        float IWingControl.WingArea => WingOpenness;
     }
 
     Vector3 WingRotationToNormal(Vector2 rotation)
@@ -85,10 +87,10 @@ public sealed partial class HumanFlightState : HumanAirState
         var input = Human.ControlProvider.InputFlight;
 
         leftWing.UpdateOpenAngle(input.LeftWingOpenness * input.ForwardWingsOpenness * input.CommonWingsOpenness * 0.5f);
-        leftWing.UpdateRotation(input.ForwardWingRotationNormalized * wingRotation);
+        leftWing.UpdateRotation(input.LeftWingRotationNormalized * wingRotation);
 
         rightWing.UpdateOpenAngle(input.RightWingOpenness * input.ForwardWingsOpenness * input.CommonWingsOpenness * 0.5f);
-        rightWing.UpdateRotation(-input.ForwardWingRotationNormalized * wingRotation);
+        rightWing.UpdateRotation(input.RightWingRotationNormalized * wingRotation);
 
         backWing.UpdateOpenAngle(input.BackWingsOpenness * input.CommonWingsOpenness);
         backWing.UpdateRotation(input.BackWingRotationNormalized * wingRotation);

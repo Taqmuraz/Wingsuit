@@ -43,11 +43,10 @@ public sealed partial class HumanParachuteState : HumanAirState
     {
         float commonArea = Mathf.Clamp01((Time.time - enterTime) / parachuteOpenTimeLength);
 
-        var input = Human.ControlProvider.InputFlight;
-        parachuteWingBack.WingPotential = input.BackWingsOpenness * commonArea;
-        parachuteWingForward.WingPotential = input.ForwardWingsOpenness * commonArea;
-        parachuteWingLeft.WingPotential = input.LeftWingOpenness * commonArea;
-        parachuteWingRight.WingPotential = input.RightWingOpenness * commonArea;
+        parachuteWingBack.WingPotential = commonArea;
+        parachuteWingForward.WingPotential = commonArea;
+        parachuteWingLeft.WingPotential = commonArea;
+        parachuteWingRight.WingPotential = commonArea;
     }
 
     [BehaviourEvent]

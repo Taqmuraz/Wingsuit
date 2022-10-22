@@ -16,7 +16,6 @@ public sealed class Menu : MonoBehaviour
     static readonly Dictionary<string, Func<IMenu>> menuConstructors = new Dictionary<string, Func<IMenu>>()
     {
         ["Main"] = () => new MainMenu(),
-        ["Settings"] = () => new SettingsMenu(),
     };
 
     private void Start()

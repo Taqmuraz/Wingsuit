@@ -17,8 +17,8 @@ public abstract class TemplateMenu : IMenu
     public IMenu DrawMenu(IExtendedCanvas canvas)
     {
         var buttons = GetButtons().Reverse().ToArray();
-        float elementWidth = 200f;
-        float elementHeight = 50f;
+        float elementWidth = Screen.width * 0.25f;
+        float elementHeight = Screen.height * 0.1f;
         float startX = (Screen.width - elementWidth) * 0.5f;
         float startY = (Screen.height - elementHeight * buttons.Length) * 0.5f;
         for (int i = 0; i < buttons.Length; i++)

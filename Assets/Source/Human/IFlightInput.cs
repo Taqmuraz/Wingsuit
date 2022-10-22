@@ -7,6 +7,7 @@ public interface IFlightInput
     float BackWingsOpenness { get; }
     float LeftWingOpenness { get; }
     float RightWingOpenness { get; }
-    Vector2 ForwardWingRotationNormalized { get; }
+    Vector2 LeftWingRotationNormalized { get; }
+    Vector2 RightWingRotationNormalized { get; }
     Vector2 BackWingRotationNormalized { get; }
 }
