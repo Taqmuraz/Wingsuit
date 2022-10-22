@@ -7,8 +7,8 @@ public sealed class TimurZarubinAirForceEngine : IAirForceEngine
         Vector3 globalNormal = wing.WingNormal;
         Vector3 globalPoint = transformState.LocalToWorld.MultiplyPoint3x4(wing.WingPivot);
 
-        float airDensity = 2f;
-        float c = 2f;
+        float airDensity = 1.5f;
+        float c = 1.5f;
 
         Vector3 velocity = moveSystem.GetVelocityAtPoint(globalPoint);
 
