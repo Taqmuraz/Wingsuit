@@ -47,7 +47,7 @@ public sealed partial class HumanFlightState : HumanAirState
         public Vector3 WingPivot { get; }
         public Vector3 WingNormal => state.WingRotationToNormal(WingRotation);
 
-        float IWingControl.WingArea => WingOpenness;
+        float IWingControl.WingArea => WingOpenness * 2f;
     }
 
     Vector3 WingRotationToNormal(Vector2 rotation)

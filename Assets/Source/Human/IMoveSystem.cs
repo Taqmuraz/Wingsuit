@@ -13,7 +13,9 @@ public interface IMoveSystem : IEventsHandler
     bool IsOnGround { get; }
     void ApplyForce(Vector3 force);
     Vector3 Size { get; set; }
+    float Mass { get; }
 
     Vector3 GetVelocityAtPoint(Vector3 point);
     void AddForceAtPoint(Vector3 force, Vector3 point);
+    void AddVelocityAtPoint(Vector3 velocity, Vector3 point);
 }

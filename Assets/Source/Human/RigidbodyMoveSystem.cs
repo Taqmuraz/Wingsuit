@@ -95,4 +95,10 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
     {
         rigidbody.AddForceAtPosition(force, point, ForceMode.Force);
     }
+    public void AddVelocityAtPoint(Vector3 velocity, Vector3 point)
+    {
+        rigidbody.AddForceAtPosition(velocity, point, ForceMode.VelocityChange);
+    }
+
+    public float Mass => rigidbody.mass;
 }
