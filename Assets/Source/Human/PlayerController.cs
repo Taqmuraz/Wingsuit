@@ -19,7 +19,7 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
 
     protected override IMoveSystem CreateMoveSystem()
     {
-        return new RigidbodyMoveSystem(gameObject.AddComponent<Rigidbody>());
+        return new RigidbodyMoveSystem(gameObject);
     }
 
     protected override void Initialize()

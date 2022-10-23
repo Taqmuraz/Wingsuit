@@ -6,7 +6,7 @@ public sealed class TestHumanController : HumanController, IHumanControlProvider
 
     protected override IMoveSystem CreateMoveSystem()
     {
-        return new RigidbodyMoveSystem(gameObject.AddComponent<Rigidbody>());
+        return new RigidbodyMoveSystem(gameObject);
     }
 
     public IControlAction GetAction()
