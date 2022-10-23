@@ -9,8 +9,6 @@ public sealed class PlayerCameraController : ICameraController
     int humanMask;
     ITransformState target;
 
-    IInputProvider Input => InputProvider.GetInputProvider();
-
     public PlayerCameraController(IHumanController player)
     {
         this.player = player;

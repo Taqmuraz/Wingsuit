@@ -19,6 +19,12 @@ public sealed partial class HumanFlightState : HumanAirState
         public Vector2 WingRotation { get; }
         public Vector3 WingPivot { get; }
         public Vector3 WingNormal => state.WingRotationToNormal(WingRotation);
+
+        bool IWingControl.GetResistanceNormal(Vector3 velocity, out Vector3 normal)
+        {
+            normal = state.ResistanceNormal(WingNormal, velocity);
+            return true;
+        }
     }
 
     sealed class DynamicWingControl : IWingControl
@@ -47,7 +53,18 @@ public sealed partial class HumanFlightState : HumanAirState
         public Vector3 WingPivot { get; }
         public Vector3 WingNormal => state.WingRotationToNormal(WingRotation);
 
-        float IWingControl.WingArea => WingOpenness;
+        float IWingControl.WingArea => WingOpenness * 2f;
+
+        bool IWingControl.GetResistanceNormal(Vector3 velocity, out Vector3 normal)
+        {
+            normal = state.ResistanceNormal(WingNormal, velocity);
+            return true;
+        }
+    }
+
+    Vector3 ResistanceNormal(Vector3 globalNormal, Vector3 velocity)
+    {
+        return globalNormal * -Mathf.Sign(Vector3.Dot(velocity, globalNormal));
     }
 
     Vector3 WingRotationToNormal(Vector2 rotation)

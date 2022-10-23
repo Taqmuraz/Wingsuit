@@ -31,7 +31,7 @@ public abstract class HumanAirState : HumanState, ICollisionHandler
 
     protected abstract IEnumerable<IWingControl> EnumerateControls();
 
-    protected virtual IAirForceEngine AirForceEngine { get; } = new TimurZarubinAirForceEngine();
+    protected virtual IAirForceEngine AirForceEngine { get; } = new DefaultAirForceEngine();
 
     [BehaviourEvent]
     void FixedUpdate()

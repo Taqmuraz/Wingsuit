@@ -12,4 +12,7 @@ public sealed class PlayerStandardCameraControllerMode : IPlayerCameraMode
         euler.x = Mathf.Clamp(euler.x, -80f, 80f);
         euler.z = 0f;
     }
+
+
+    IInputProvider Input => InputProvider.GetInputProvider();
 }

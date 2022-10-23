@@ -3,6 +3,6 @@
 public interface IWingControl
 {
     float WingArea { get; }
-    Vector3 WingNormal { get; }
+    bool GetResistanceNormal(Vector3 velocity, out Vector3 normal);
     Vector3 WingPivot { get; }
 }

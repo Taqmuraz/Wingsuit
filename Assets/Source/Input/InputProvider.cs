@@ -5,7 +5,7 @@
     public static IInputProvider GetInputProvider()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
-        return PCInputProvider.Instance;
+        return MobileInputProvider.Instance ?? emptyProvider;
 #else
         return MobileInputProvider.Instance ?? emptyProvider;
 #endif

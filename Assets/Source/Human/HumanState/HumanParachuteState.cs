@@ -6,17 +6,24 @@ public sealed partial class HumanParachuteState : HumanAirState
     sealed class ParachuteWing : IWingControl
     {
         HumanParachuteState state;
+        Vector3 localNormal;
 
-        public ParachuteWing(HumanParachuteState state, Vector3 pivot)
+        public ParachuteWing(HumanParachuteState state, Vector3 pivot, Vector3 localNormal)
         {
             this.state = state;
             WingPivot = pivot;
+            this.localNormal = localNormal;
         }
 
         public float WingPotential { get; set; }
-        public Vector3 WingNormal => WingPivot.normalized;
         public Vector3 WingPivot { get; }
-        float IWingControl.WingArea => WingPotential;
+        float IWingControl.WingArea => WingPotential * 2f;
+
+        bool IWingControl.GetResistanceNormal(Vector3 velocity, out Vector3 normal)
+        {
+            normal = state.Human.TransformState.Rotation * localNormal;
+            return Vector3.Dot(velocity, normal) < 0f;
+        }
     }
 
     HumanParachuteEquipmentElement parachute;
@@ -30,10 +37,10 @@ public sealed partial class HumanParachuteState : HumanAirState
     [BehaviourEvent]
     void Initialize()
     {
-        parachuteWingForward = new ParachuteWing(this, new Vector3(0f, 3f, 1f));
-        parachuteWingBack = new ParachuteWing(this, new Vector3(0f, 3f, -1f));
-        parachuteWingLeft = new ParachuteWing(this, new Vector3(-1f, 3f, 0f));
-        parachuteWingRight = new ParachuteWing(this, new Vector3(1f, 3f, 0f));
+        parachuteWingForward = new ParachuteWing(this, new Vector3(0f, 3f, 1f), new Vector3(0f, 1f, 1f).normalized);
+        parachuteWingBack = new ParachuteWing(this, new Vector3(0f, 3f, -1f), new Vector3(0f, 1f, -1f).normalized);
+        parachuteWingLeft = new ParachuteWing(this, new Vector3(-1f, 3f, 0f), new Vector3(-1f, 1f, 0f).normalized);
+        parachuteWingRight = new ParachuteWing(this, new Vector3(1f, 3f, 0f), new Vector3(1f, 1f, 0f).normalized);
 
         parachute = Human.GetEquipmentElement<HumanParachuteEquipmentElement>();
     }

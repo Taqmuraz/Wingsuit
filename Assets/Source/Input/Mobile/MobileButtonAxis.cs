@@ -7,8 +7,10 @@ public sealed class MobileButtonAxis : MonoBehaviour, IMobileControlProvider, IP
     [SerializeField] string axisName;
     [SerializeField] float pressValue = 1f;
     [SerializeField] float defaultValue = 0f;
+    [SerializeField] bool smooth;
     CustomMobileAxis axis;
     float currentValue;
+    bool pressed = false;
 
     void Awake()
     {
@@ -27,11 +29,18 @@ public sealed class MobileButtonAxis : MonoBehaviour, IMobileControlProvider, IP
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        currentValue = pressValue;
+        pressed = true;
+        if (!smooth) currentValue = pressValue;
+    }
+
+    void Update()
+    {
+        if (pressed && smooth) currentValue = Mathf.Lerp(currentValue, pressValue, Time.deltaTime * 5f);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        pressed = false;
         currentValue = defaultValue;
     }
 }
