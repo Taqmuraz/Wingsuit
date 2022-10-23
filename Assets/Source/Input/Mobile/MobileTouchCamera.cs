@@ -41,7 +41,7 @@ public sealed class MobileTouchCamera : MonoBehaviour, IMobileControlProvider, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        input = eventData.delta / dragUnit;
+        input = (eventData.delta / dragUnit) * Time.deltaTime;
         state = MobileKeyState.Down;
     }
 }

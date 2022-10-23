@@ -93,6 +93,7 @@ MonoBehaviour:
   axisName: Vertical
   pressValue: -1
   defaultValue: 0
+  smooth: 1
 --- !u!1 &340159527
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +333,7 @@ MonoBehaviour:
   axisName: Vertical
   pressValue: 1
   defaultValue: 0
+  smooth: 1
 --- !u!1 &1261078409
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,6 +500,7 @@ MonoBehaviour:
   axisName: Horizontal
   pressValue: -1
   defaultValue: 0
+  smooth: 1
 --- !u!1 &1842013853
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,6 +594,7 @@ MonoBehaviour:
   axisName: Horizontal
   pressValue: 1
   defaultValue: 0
+  smooth: 1
 --- !u!1 &1925395042
 GameObject:
   m_ObjectHideFlags: 0
@@ -2400,7 +2404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99831a34cbc05e14da01253e9e4ad8e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragUnit: 25
+  dragUnit: 0.25
 --- !u!1 &8288198940040566186
 GameObject:
   m_ObjectHideFlags: 0
