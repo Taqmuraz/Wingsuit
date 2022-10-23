@@ -10,11 +10,11 @@ public abstract class HumanKeyBasedAnimation : HumanAnimation
     protected sealed class HumanBoneAnimation
     {
         HumanBoneKey[] keys;
-        HumanBoneState bone;
+        MemorizedTransformState bone;
         float timeLength;
         float timeOffset;
 
-        public HumanBoneAnimation(HumanBoneState bone, float timeLength, float timeOffset, params HumanBoneKey[] keys)
+        public HumanBoneAnimation(MemorizedTransformState bone, float timeLength, float timeOffset, params HumanBoneKey[] keys)
         {
             this.bone = bone;
             this.timeLength = timeLength;
@@ -47,7 +47,7 @@ public abstract class HumanKeyBasedAnimation : HumanAnimation
             this.localPosition = localPosition;
         }
 
-        public void Apply(HumanBoneState state)
+        public void Apply(MemorizedTransformState state)
         {
             state.PreRotate(localRotation);
             state.State.LocalPosition = state.InitialLocalPosition + localPosition;

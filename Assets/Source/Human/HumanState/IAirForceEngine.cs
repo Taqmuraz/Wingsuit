@@ -1,4 +1,4 @@
 ﻿public interface IAirForceEngine
 {
-    void CalculateAirForce(IWingControl wing, IMoveSystem moveSystem, ITransformState transformState);
+    void CalculateAirForce(IWingControl wing, IPhysicsBody physicsBody, ITransformState transformState);
 }

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
-public interface IMoveSystem : IEventsHandler
+public interface IMoveSystem : IEventsHandler, IPhysicsBody
 {
-    Vector3 Velocity { get; set; }
     Vector3 GroundNormal { get; }
     bool EnableCollisions { get; set; }
     bool EnablePhysics { get; set; }
@@ -11,11 +10,5 @@ public interface IMoveSystem : IEventsHandler
     void Move(Vector3 velocity);
     Vector3 Center { get; }
     bool IsOnGround { get; }
-    void ApplyForce(Vector3 force);
     Vector3 Size { get; set; }
-    float Mass { get; }
-
-    Vector3 GetVelocityAtPoint(Vector3 point);
-    void AddForceAtPoint(Vector3 force, Vector3 point);
-    void AddVelocityAtPoint(Vector3 velocity, Vector3 point);
 }

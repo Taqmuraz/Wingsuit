@@ -7,7 +7,7 @@ public sealed partial class HumanParachuteToGroundState
     {
         HumanParachuteToGroundState state;
 
-        HumanBoneState parachuteState;
+        MemorizedTransformState parachuteState;
 
         public HumanParachuteToGroundAnimation(IHumanController human, HumanParachuteToGroundState state) : base(human)
         {
@@ -17,7 +17,7 @@ public sealed partial class HumanParachuteToGroundState
         [BehaviourEvent]
         void Initialize()
         {
-            parachuteState = new HumanBoneState(new StandardTransformState(state.parachute.Root));
+            parachuteState = new MemorizedTransformState(new StandardTransformState(state.parachute.Root));
         }
 
         [BehaviourEvent]

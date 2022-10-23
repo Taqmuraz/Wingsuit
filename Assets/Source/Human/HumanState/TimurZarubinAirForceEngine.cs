@@ -2,20 +2,20 @@
 
 public sealed class TimurZarubinAirForceEngine : IAirForceEngine
 {
-    public void CalculateAirForce(IWingControl wing, IMoveSystem moveSystem, ITransformState transformState)
+    public void CalculateAirForce(IWingControl wing, IPhysicsBody physicsBody, ITransformState transformState)
     {
         Vector3 globalPoint = transformState.LocalToWorld.MultiplyPoint3x4(wing.WingPivot);
 
         float airDensity = 1f;
         float c = 2f;
 
-        Vector3 velocity = moveSystem.GetVelocityAtPoint(globalPoint);
+        Vector3 velocity = physicsBody.GetVelocityAtPoint(globalPoint);
 
         if (!wing.GetResistanceNormal(velocity, out Vector3 resistanceNormal)) return;
 
         float areaProjection = -Vector3.Dot(resistanceNormal, velocity.normalized) * wing.WingArea;
         float velocityMagnitude = velocity.magnitude;
-        float m = moveSystem.Mass;
+        float m = physicsBody.Mass;
 
         float AccelerationPartFunction(float arg)
         {
@@ -29,6 +29,6 @@ public sealed class TimurZarubinAirForceEngine : IAirForceEngine
         float k4 = AccelerationPartFunction(velocityMagnitude + k3 * tau);
         Vector3 resistanceForce = -resistanceNormal * (k1 + 2 * k2 + 2 * k3 + k4) * tau / 6;
 
-        moveSystem.AddVelocityAtPoint(resistanceForce, globalPoint);
+        physicsBody.AddVelocityAtPoint(resistanceForce, globalPoint);
     }
 }

@@ -4,6 +4,12 @@ public sealed class PlayerStandardCameraControllerMode : IPlayerCameraMode
 {
     public Vector3 Offset { get; } = new Vector3(0f, 0f, -4f);
     public float Fov => 60f;
+    int ignoreMask;
+
+    public PlayerStandardCameraControllerMode()
+    {
+        ignoreMask = ~LayerMask.GetMask(HumanController.HumanLayerName, HumanController.HumanElementLayerName);
+    }
 
     public void UpdateRotation(ref Vector3 euler)
     {
@@ -15,4 +21,6 @@ public sealed class PlayerStandardCameraControllerMode : IPlayerCameraMode
 
 
     IInputProvider Input => InputProvider.GetInputProvider();
+
+    public int IgnoreLayerMask => ignoreMask;
 }

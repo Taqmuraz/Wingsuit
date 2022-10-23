@@ -7,7 +7,7 @@ public sealed partial class HumanParachuteState
     {
         HumanParachuteState state;
 
-        HumanBoneState[] stropes;
+        MemorizedTransformState[] stropes;
 
         public HumanParachuteAnimation(IHumanController human, HumanParachuteState state) : base(human)
         {
@@ -17,7 +17,7 @@ public sealed partial class HumanParachuteState
         [BehaviourEvent]
         void Initialize()
         {
-            stropes = state.parachute.Stropes.Select(s => new HumanBoneState(new StandardTransformState(s))).ToArray();
+            stropes = state.parachute.Stropes.Select(s => new MemorizedTransformState(new StandardTransformState(s))).ToArray();
         }
 
         protected override void Animate()

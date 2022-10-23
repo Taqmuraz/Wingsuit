@@ -6,6 +6,7 @@ public abstract class HumanController : MonoBehaviour, IHumanController
 {
     public static string HumanLayerName => "Human";
     public static string HumanElementLayerName => "HumanElement";
+    public static string VehicleLayerName => "Vehicle";
 
     public static void BuildHuman<TController>(GameObject instance, IHumanBuildInfoProvider provider) where TController : HumanController
     {
@@ -62,7 +63,9 @@ public abstract class HumanController : MonoBehaviour, IHumanController
         Initialize();
 
         MoveSystem = AddListener(CreateMoveSystem());
-        TransformState = new StandardTransformState(transform);
+        var transformState = new StandardTransformState(transform);
+        TransformState = transformState;
+        HierarchyState = transformState;
         stateMachile = AddListener(new HumanStateMachile(this));
     }
 
@@ -116,4 +119,6 @@ public abstract class HumanController : MonoBehaviour, IHumanController
     {
         return (TElement)equipment.First(e => e is TElement);
     }
+
+    public IHierarchyState HierarchyState { get; private set; }
 }

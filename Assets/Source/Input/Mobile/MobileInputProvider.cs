@@ -13,6 +13,7 @@ public sealed class MobileInputProvider : MonoBehaviour, IInputProvider
 
     void Start()
     {
+#if UNITY_MOBILE
         var controls = GetComponentsInChildren<IMobileControlProvider>();
         foreach (var axisGroup in controls.SelectMany(c => c.GetAxes()).GroupBy(a => a.Name))
         {
@@ -23,6 +24,9 @@ public sealed class MobileInputProvider : MonoBehaviour, IInputProvider
             keys.Add(keyGroup.Key, keyGroup.ToArray());
         }
         Instance = this;
+#else
+        gameObject.SetActive(false);
+#endif
     }
 
     bool IInputProvider.GetKey(KeyCode keyCode)

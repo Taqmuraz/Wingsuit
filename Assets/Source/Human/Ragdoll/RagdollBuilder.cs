@@ -6,6 +6,7 @@ public static class RagdollBuilder
     static RagdollBuilder()
     {
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer(HumanController.HumanElementLayerName), LayerMask.NameToLayer(HumanController.HumanLayerName), true);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(HumanController.HumanElementLayerName), LayerMask.NameToLayer(HumanController.VehicleLayerName), true);
     }
 
     public static IRagdollSystem BuildForHuman(IHumanController human, GameObject gameObject)

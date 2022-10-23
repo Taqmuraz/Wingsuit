@@ -1,8 +1,27 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Core.UserInterface.UnityUI;
+using Core.UserInterface.Basement;
+using Core.UserInterface;
 
-public sealed class PlayerController : HumanController, IHumanControlProvider, IControlAction, IFlightInput
+public sealed class PlayerController : HumanController, IHumanControlProvider, IControlAction, IFlightInput, IVehicleInput, IUser
 {
+    sealed class PlayerResetAction : IControlAction
+    {
+        PlayerController player;
+
+        public PlayerResetAction(PlayerController player)
+        {
+            this.player = player;
+        }
+
+        public void VisitAcceptor(IControlAcceptor acceptor)
+        {
+            acceptor.MoveToState("Default");
+            player.TransformState.Position = player.startPosition;
+        }
+    }
+
     public static IHumanController Player { get; private set; }
 
     public override IHumanControlProvider ControlProvider => this;
@@ -11,11 +30,13 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
     Camera mainCamera;
     Vector3 startPosition;
 
-    IControlAction resetAction = new MoveToStateAction("Default", "Disabled");
+    IControlAction resetAction;
     IControlAction flightToParachuteAction = new MoveToStateAction("OpenParachute", "Flight");
     IControlAction parachuteToFlightAction = new MoveToStateAction("Flight", "Parachute");
     IControlAction flightToRock = new MoveToStateAction("Rock", "Flight");
     IControlAction rockToFlight = new MoveToStateAction("Flight", "Rock");
+    IExtendedCanvas playerCanvas;
+    DrawOperationIdentifier playerCanvasIdentifier = new DrawOperationIdentifier();
 
     SafeDictionary<string, IPlayerCameraMode> cameraControllerModes;
 
@@ -36,11 +57,15 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         cameraControllerModes = new SafeDictionary<string, IPlayerCameraMode>(new Dictionary<string, IPlayerCameraMode>()
         {
             ["Flight"] = flightCameraMode,
+            ["Vehicle"] = new PlayerVehicleCameraControllerMode(this),
         }, () => defaultCameraMode);
 
         startPosition = transform.position;
+        resetAction = new PlayerResetAction(this);
 
         Player = this;
+
+        playerCanvas = UnityCanvasExtended.CreateCanvas();
     }
     protected override void OnFinalize()
     {
@@ -129,13 +154,27 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         if (Input.GetKey(KeyCode.R))
         {
             EnqueueAction(resetAction);
-            TransformState.Position = startPosition;
         }
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             EnqueueAction(rockToFlight);
             EnqueueAction(flightToRock);
         }
+
+        playerCanvas.Clear();
+        playerCanvas.BeginDraw(playerCanvasIdentifier);
+
+        if (Usable.FindUsable(new Bounds(MoveSystem.Center, MoveSystem.Size), out IUsable usable))
+        {
+            playerCanvas.DrawText($"Press F to use {usable.Description}", new Rect(Screen.width * 0.5f - 100f, 0f, 200f, 100f));
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                EnqueueAction(usable.Use(this));
+            }
+        }
+
+        playerCanvas.EndDraw();
     }
 
     public Vector3 InputMovementLocal => Vector3.ClampMagnitude(new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")), 1f);
@@ -152,4 +191,13 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
     }
 
     IFlightInput IHumanControlProvider.InputFlight => this;
+    IVehicleInput IHumanControlProvider.VehicleInput => this;
+
+    Vector4 IVehicleInput.ControlInput => new Vector4()
+    {
+        x = Input.GetAxis("Horizontal"),
+        y = Input.GetAxis("Vertical"),
+        z = Input.GetKey(KeyCode.Z) ? -1f : (Input.GetKey(KeyCode.C) ? 1f : 0f),
+    };
+    float IVehicleInput.AccelerationInput => Input.GetKey(KeyCode.LeftShift) ? 1f : 0f;
 }

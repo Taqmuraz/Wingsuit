@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public sealed class StandardTransformState : ITransformState
+public sealed class StandardTransformState : ITransformState, IHierarchyState
 {
     Transform transform;
 
@@ -39,4 +39,11 @@ public sealed class StandardTransformState : ITransformState
     public Vector3 Forward => transform.forward;
     public Vector3 Up => transform.up;
     public Vector3 Right => transform.right;
+
+    public void ApplyParent(Transform parent, Vector3 localPosition, Quaternion localRotation)
+    {
+        transform.parent = parent;
+        transform.localPosition = localPosition;
+        transform.localRotation = localRotation;
+    }
 }
