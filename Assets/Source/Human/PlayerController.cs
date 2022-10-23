@@ -3,6 +3,8 @@ using UnityEngine;
 
 public sealed class PlayerController : HumanController, IHumanControlProvider, IControlAction, IFlightInput
 {
+    public static IHumanController Player { get; private set; }
+
     public override IHumanControlProvider ControlProvider => this;
     ICameraController cameraController;
     string currentStateKey;
@@ -37,6 +39,8 @@ public sealed class PlayerController : HumanController, IHumanControlProvider, I
         }, () => defaultCameraMode);
 
         startPosition = transform.position;
+
+        Player = this;
     }
     protected override void OnFinalize()
     {

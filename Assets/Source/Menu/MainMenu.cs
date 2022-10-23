@@ -7,6 +7,7 @@ public sealed class MainMenu : TemplateMenu
     {
         yield return ("Play City Level", () => LevelManager.LoadLevel(2));
         yield return ("Play Mountains Level", () => LevelManager.LoadLevel(3));
+        yield return ("Play Mountains Downhill Level", () => LevelManager.LoadLevel(4));
         if (MusicSource.MusicEnabled)
         {
             yield return ("Disable music in game", () => MusicSource.MusicEnabled = false);
