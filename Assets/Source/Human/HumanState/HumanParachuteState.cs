@@ -17,13 +17,18 @@ public sealed partial class HumanParachuteState : HumanAirState
 
         public float WingPotential { get; set; }
         public Vector3 WingPivot { get; }
-        float IWingControl.WingArea => WingPotential * 2f;
+        float IWingControl.WingArea => WingPotential * 5f;
 
         bool IWingControl.GetResistanceNormal(Vector3 velocity, out Vector3 normal)
         {
             normal = state.Human.TransformState.Rotation * localNormal;
             return Vector3.Dot(velocity, normal) < 0f;
         }
+    }
+
+    protected override void OnLanded(Vector3 point, Vector3 normal, Vector3 impulse)
+    {
+        MoveToState("ParachuteToGround");
     }
 
     HumanParachuteEquipmentElement parachute;

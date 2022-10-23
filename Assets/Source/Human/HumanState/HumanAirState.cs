@@ -5,15 +5,22 @@ public abstract class HumanAirState : HumanState, ICollisionHandler
 {
     public void OnCollisionEnter(Vector3 point, Vector3 normal, Vector3 impulse)
     {
-        if (normal.y > 0.9f && impulse.magnitude < 10f)
+        if (Human.MoveSystem.IsOnGround && impulse.magnitude < LandingMaxVelocity)
         {
-            Human.TransformState.Position = point;
-            MoveToState("Default");
+            OnLanded(point, normal, impulse);
         }
         else
         {
             MoveToState("Disabled");
         }
+    }
+
+    protected virtual float LandingMaxVelocity => 10f;
+
+    protected virtual void OnLanded(Vector3 point, Vector3 normal, Vector3 impulse)
+    {
+        Human.TransformState.Position = point;
+        MoveToState("Default");
     }
 
     [BehaviourEvent]

@@ -36,18 +36,13 @@ public sealed class RigidbodyMoveSystem : EventsHandler, IMoveSystem
     {
         rigidbody.constraints = EnableFreeRotation ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeRotation;
 
-        IsOnGround = Physics.CheckSphere(rigidbody.transform.position + new Vector3(0f, Size.x * 0.25f, 0f), Size.x * 0.3f, humanMask);
+        IsOnGround = Physics.CheckSphere(rigidbody.transform.position + new Vector3(0f, Size.x * 0.25f, 0f), Size.x * 0.45f, humanMask);
         if (IsOnGround && Physics.Raycast(rigidbody.transform.position + new Vector3(0f, 0.1f, 0f), Vector3.down, out RaycastHit hit, 0.5f, humanMask))
         {
             GroundNormal = hit.normal;
         }
         else GroundNormal = Vector3.up;
     }
-    [BehaviourEvent]
-    void Update()
-    {
-    }
-
     public bool IsOnGround { get; private set; } = true;
 
     public void Move(Vector3 velocity)

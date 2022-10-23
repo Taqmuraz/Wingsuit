@@ -6,13 +6,10 @@ public sealed class HumanParachuteEquipmentElement : HumanEquipmentElement, IHum
     [SerializeField] Transform stropeLeftBack;
     [SerializeField] Transform stropeRightForward;
     [SerializeField] Transform stropeRightBack;
+    [SerializeField] Transform root;
 
-    public Transform StropeLF => stropeLeftForward;
-    public Transform StropeLB => stropeLeftBack;
-    public Transform StropeRF => stropeRightForward;
-    public Transform StropeRB => stropeRightBack;
-
-    public Transform[] Stropes => new[] { StropeLF, StropeRF, StropeLB, StropeRB };
+    public Transform[] Stropes => new[] { stropeLeftForward, stropeLeftBack, stropeRightForward, stropeRightBack };
+    public Transform Root => root;
 
     public void Enable()
     {
