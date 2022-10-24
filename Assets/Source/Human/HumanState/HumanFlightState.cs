@@ -6,19 +6,19 @@ public sealed partial class HumanFlightState : HumanAirState
     sealed class StaticWing : IWingControl
     {
         HumanFlightState state;
+        Vector2 wingRotation;
 
         public StaticWing(float wingOpenAngle, Vector2 wingRotation, Vector3 wingPivot, HumanFlightState state)
         {
             this.state = state;
             WingArea = wingOpenAngle;
-            WingRotation = wingRotation;
+            this.wingRotation = wingRotation;
             WingPivot = wingPivot + new Vector3(0f, state.HumanSize.y * 0.5f, 0f);
         }
 
         public float WingArea { get; }
-        public Vector2 WingRotation { get; }
         public Vector3 WingPivot { get; }
-        public Vector3 WingNormal => state.WingRotationToNormal(WingRotation);
+        Vector3 WingNormal => state.WingRotationToNormal(wingRotation);
 
         bool IWingControl.GetResistanceNormal(Vector3 velocity, out Vector3 normal)
         {
@@ -51,7 +51,7 @@ public sealed partial class HumanFlightState : HumanAirState
         }
 
         public Vector3 WingPivot { get; }
-        public Vector3 WingNormal => state.WingRotationToNormal(WingRotation);
+        Vector3 WingNormal => state.WingRotationToNormal(WingRotation);
 
         float IWingControl.WingArea => WingOpenness * 2f;
 
